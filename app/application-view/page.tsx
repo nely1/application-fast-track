@@ -1,24 +1,23 @@
 "use client"
 import { useState } from 'react';
 
-import { pdfjs, Document, Page } from 'react-pdf';
+import Multiselect from 'multiselect-react-dropdown';
 
 // Material UI components
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
-import Multiselect from 'multiselect-react-dropdown';
+const qualOptions = [
+    { name: "Underqualified", id: "unq" },
+    { name: "Misinformation found", id: "mis" },
+  ];
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
-
-const options = [
-    { name: "Option 1", id: 1 },
-    { name: "Option 2", id: 2 },
-    { name: "Option 3", id: 3 },
-    { name: "Option 4", id: 4 },
-    { name: "Option 5", id: 5 }
+const formatOptions = [
+    { name: "Too Short", id: "sho" },
+    { name: "Too Long", id: "lon" },
+    { name: "Poor Formatting", id: "for" },
   ];
 
 export default function MyApp() {
@@ -30,46 +29,46 @@ export default function MyApp() {
   }
 
   return (
-    <Grid container sx={{ ml: 3, mt:3 }}>
+    <Grid container sx={{ pt:3, pl:3 }} spacing={5}>
         {/* xs is item spacing, ml is margin spacing */}
-        <Grid item xs={5}>
-            <Document file="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-                <Page pageNumber={pageNumber} />
-            </Document>
+        <Grid item>
+            <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="600"/>
         </Grid>
-        <Grid item xs={3} sx={{ ml: 8 }} >
-            {/* <input type="checkbox" id="tooshort_id" name="comments" value="too_short"/>
-            <label htmlFor="tooshort_id">Too short</label>
+        <Grid item>
+            <Grid item>
+                <Multiselect
+                placeholder="Formatting Issues"
+                options={formatOptions}
+                onSelect={function noRefCheck(){}}
+                onRemove={function noRefCheck(){}}
+                displayValue="name"
+                closeIcon="cancel"
+                selectedValues={function noRefCheck(){}}
+                className="multiSelectContainer"
+                showCheckbox
+                />
+                <Multiselect
+                placeholder="Qualification Issues"
+                options={qualOptions}
+                onSelect={function noRefCheck(){}}
+                onRemove={function noRefCheck(){}}
+                displayValue="name"
+                closeIcon="cancel"
+                selectedValues={function noRefCheck(){}}
+                className="multiSelectContainer"
+                showCheckbox
+                />
+            </Grid>
+            <Grid item >
+                Final evaluation:
 
-            <input type="checkbox" id="underqualified_id" name="comments" value="underqualified"/>
-            <label htmlFor="underqualified_id">Not qualified for position</label>
-
-            <input type="checkbox" id="misleading_id" name="comments" value="misleading"/>
-            <label htmlFor="misleading_id">Suspicious information presented</label> */}
-
-            <Multiselect
-            placeholder="Formatting Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
-            />
-
-            <Multiselect
-            placeholder="Qualification Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
-            />
+                <Button variant="contained" endIcon={<VerifiedIcon />} color='success'>
+                    Accept
+                </Button>
+                <Button variant="contained" endIcon={<DangerousIcon />} color='error'>
+                    Reject
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
   );
