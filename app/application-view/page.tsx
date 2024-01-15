@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react';
-
-import Multiselect from 'multiselect-react-dropdown';
+import './style.css'
+import { MultiSelect } from "react-multi-select-component";
 
 // Material UI components
 import Grid from '@mui/material/Grid';
@@ -10,66 +10,52 @@ import VerifiedIcon from '@mui/icons-material/Verified';
 import DangerousIcon from '@mui/icons-material/Dangerous';
 
 const qualOptions = [
-    { name: "Underqualified", id: "unq" },
-    { name: "Misinformation found", id: "mis" },
+    { label: "Underqualified", value: "unq" },
+    { label: "Misinformation found", value: "mis" },
   ];
 
 const formatOptions = [
-    { name: "Too Short", id: "sho" },
-    { name: "Too Long", id: "lon" },
-    { name: "Poor Formatting", id: "for" },
+    { label: "Too Short", value: "sho" },
+    { label: "Too Long", value: "lon" },
+    { label: "Poor Formatting", value: "for" },
   ];
 
 export default function MyApp() {
-  const [numPages, setNumPages] = useState<number>();
-  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
-  }
+  const [selected, setSelected] = useState([]);
 
   return (
-    <Grid container sx={{ pt:3, pl:3 }} spacing={5}>
-        {/* xs is item spacing, ml is margin spacing */}
-        <Grid item>
-            <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="600"/>
-        </Grid>
-        <Grid item>
-            <Grid item>
-                <Multiselect
-                placeholder="Formatting Issues"
-                options={formatOptions}
-                onSelect={function noRefCheck(){}}
-                onRemove={function noRefCheck(){}}
-                displayValue="name"
-                closeIcon="cancel"
-                selectedValues={function noRefCheck(){}}
-                className="multiSelectContainer"
-                showCheckbox
-                />
-                <Multiselect
-                placeholder="Qualification Issues"
-                options={qualOptions}
-                onSelect={function noRefCheck(){}}
-                onRemove={function noRefCheck(){}}
-                displayValue="name"
-                closeIcon="cancel"
-                selectedValues={function noRefCheck(){}}
-                className="multiSelectContainer"
-                showCheckbox
-                />
-            </Grid>
-            <Grid item >
+    <div className="flex h-screen pt-5 pl-5">
+        <div>
+            <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="100%"/>
+        </div>
+        <div className="pl-28 flex flex-col justify-around">
+            <MultiSelect
+            options={formatOptions}
+            value={selected}
+            onChange={setSelected}
+            labelledBy="Select"
+            overrideStrings={{"selectSomeItems": "Formatting Issues..."}}
+            hasSelectAll={false}
+            />
+            <MultiSelect
+            options={qualOptions}
+            value={selected}
+            onChange={setSelected}
+            labelledBy="Select"
+            overrideStrings={{"selectSomeItems": "Qualification Issues..."}}
+            hasSelectAll={false}
+            />
+            <div>
                 Final evaluation:
-
                 <Button variant="contained" endIcon={<VerifiedIcon />} color='success'>
                     Accept
                 </Button>
                 <Button variant="contained" endIcon={<DangerousIcon />} color='error'>
                     Reject
                 </Button>
-            </Grid>
-        </Grid>
-    </Grid>
+            </div>
+        </div>
+    </div>
   );
 }

@@ -14,9 +14,9 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
-    "@wojtekmaj/react-hooks": "^1.18.1",
     "@prisma/client": "^5.8.0",
     "@vercel/postgres": "^0.5.1",
+    "@wojtekmaj/react-hooks": "^1.18.1",
     "bcrypt": "^5.1.1",
     "multiselect-react-dropdown": "^2.0.25",
     "next": "14.0.4",
@@ -24,6 +24,7 @@
     "nodemon": "^3.0.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-multi-select-component": "^4.3.4",
     "react-pdf": "^7.7.0"
   },
   "devDependencies": {
