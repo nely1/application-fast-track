@@ -4,17 +4,28 @@ import Image from 'next/image'
 
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-
+import { useRouter, redirect } from 'next/navigation';
+import { getUserSession } from '@/lib/session';
+import { GET } from './api/auth/[...nextauth]/route';
 // this is the login page
-export default function Home() {
-  const router = useRouter();
+export default async function Home() {
+
+  const user = await getUserSession();
+  console.log(JSON.stringify(user));
+  // if (user) {
+  //   redirect('/table');
+  // }
+  
+ 
   const handleClick = () => {
-    const user = signIn("google");
-    
+    signIn("google");
+ 
   }
+
+
   return (
     <main className="flex min-h-screen flex-col items-center p-24">
+      {JSON.stringify(user)}
       <Image
               src="/logo.svg"
               alt="NES Logo"
