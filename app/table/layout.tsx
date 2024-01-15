@@ -1,10 +1,10 @@
 import React from 'react'
 import './style.css'
 
-const layout = ({children}) => {
+const layout = ({children} :any) => {
   return (
     <html lang="en">
-    <body>
+    <body suppressHydrationWarning={true}>
       <nav className="navbar">
       <a href="#" className="nav-logo">NES</a>
       <ul className="nav-menu">

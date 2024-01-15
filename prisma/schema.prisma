@@ -1,0 +1,44 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Company {
+  id        Int     @id @default(autoincrement())
+  name     String?
+  email    String   @unique
+  postings Posting[]    
+  
+}
+
+model Comment {
+  id        Int     @id @default(autoincrement())
+  comment     String
+}
+
+model Posting {
+  id        Int     @id @default(autoincrement())
+  title     String
+  description   String?
+  company   Company    @relation(fields: [companyId], references: [id])
+  companyId  Int
+  applications Application[]
+  closingDate DateTime
+  closed Boolean
+}
+
+model Application {
+  id        Int     @id @default(autoincrement())
+  posting   Posting @relation(fields: [postingId], references: [id])
+  postingId Int
+  email     String
+  resumeFile  String 
+}
