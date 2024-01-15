@@ -23,6 +23,7 @@ const formatOptions = [
 export default function MyApp() {
 
   const [selected, setSelected] = useState([]);
+  const [selected2, setSelected2] = useState([]);
 
   return (
     <div className="flex h-screen pt-5 pl-5">
@@ -40,8 +41,8 @@ export default function MyApp() {
             />
             <MultiSelect
             options={qualOptions}
-            value={selected}
-            onChange={setSelected}
+            value={selected2}
+            onChange={setSelected2}
             labelledBy="Select"
             overrideStrings={{"selectSomeItems": "Qualification Issues..."}}
             hasSelectAll={false}

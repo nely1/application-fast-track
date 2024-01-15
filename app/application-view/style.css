@@ -1,10 +1,11 @@
 .rmsc {
-    --rmsc-main: #53bd0d;
-    --rmsc-hover: #c2246d;
-    --rmsc-selected: #0f66bd !important;
-    --rmsc-border: #d80404 !important;
-    --rmsc-gray: #e20707 !important;
-    --rmsc-bg: #4920bd !important;
+    color:black !important; /* Text color */
+    --rmsc-main: black !important;
+    --rmsc-hover: white !important;
+    --rmsc-selected: #5abdf7a9 !important;
+    --rmsc-border: black !important;
+    --rmsc-gray: black !important; /*Placeholder color*/
+    --rmsc-bg: #63f55e !important;
     --rmsc-p: 10px; /* Spacing */
     --rmsc-radius: 4px; /* Radius */
     --rmsc-h: 38px; /* Height */
