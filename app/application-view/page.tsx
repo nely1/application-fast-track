@@ -1,25 +1,26 @@
 "use client"
 import { useState } from 'react';
 
-import { pdfjs, Document, Page } from 'react-pdf';
+import Multiselect from 'multiselect-react-dropdown';
 
 // Material UI components
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
-import Multiselect from 'multiselect-react-dropdown';
-
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
-
-const options = [
-    { name: "Option 1", id: 1 },
-    { name: "Option 2", id: 2 },
-    { name: "Option 3", id: 3 },
-    { name: "Option 4", id: 4 },
-    { name: "Option 5", id: 5 }
+const qualOptions = [
+    { name: "Underqualified", id: "unq" },
+    { name: "Misinformation found", id: "mis" },
   ];
+
+const formatOptions = [
+    { name: "Too Short", id: "sho" },
+    { name: "Too Long", id: "lon" },
+    { name: "Poor Formatting", id: "for" },
+  ];
+
+
 
 export default function MyApp() {
   const [numPages, setNumPages] = useState<number>();
@@ -33,9 +34,7 @@ export default function MyApp() {
     <Grid container sx={{ ml: 3, mt:3 }}>
         {/* xs is item spacing, ml is margin spacing */}
         <Grid item xs={5}>
-            <Document file="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-                <Page pageNumber={pageNumber} />
-            </Document>
+        <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="600"/>
         </Grid>
         <Grid item xs={3} sx={{ ml: 8 }} >
             {/* <input type="checkbox" id="tooshort_id" name="comments" value="too_short"/>
@@ -46,30 +45,40 @@ export default function MyApp() {
 
             <input type="checkbox" id="misleading_id" name="comments" value="misleading"/>
             <label htmlFor="misleading_id">Suspicious information presented</label> */}
+            <Grid item>
+                <Multiselect
+                placeholder="Formatting Issues"
+                options={formatOptions}
+                onSelect={function noRefCheck(){}}
+                onRemove={function noRefCheck(){}}
+                displayValue="name"
+                closeIcon="cancel"
+                selectedValues={function noRefCheck(){}}
+                className="multiSelectContainer"
+                showCheckbox
+                />
+                <Multiselect
+                placeholder="Qualification Issues"
+                options={qualOptions}
+                onSelect={function noRefCheck(){}}
+                onRemove={function noRefCheck(){}}
+                displayValue="name"
+                closeIcon="cancel"
+                selectedValues={function noRefCheck(){}}
+                className="multiSelectContainer"
+                showCheckbox
+                />
 
-            <Multiselect
-            placeholder="Formatting Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
-            />
+                Recruiter Verdict:
 
-            <Multiselect
-            placeholder="Qualification Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
-            />
+                <Button variant="contained" endIcon={<VerifiedIcon />}>
+                    Accept
+                </Button>
+                <Button variant="contained" endIcon={<DangerousIcon />}>
+                    Reject
+                </Button>
+
+            </Grid>
         </Grid>
     </Grid>
   );
