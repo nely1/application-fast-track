@@ -1,14 +1,12 @@
-"use client"
+"use client";
+
 import {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
-import { GET } from '../api/auth/[...nextauth]/route';
-import { getUserSession } from '@/lib/session';
-import { getServerSession } from 'next-auth';
-import authOption from '@/lib/auth';
 
-const tablepage : React.FC = () => {
 
-  
+
+export default function postingTable() {
+
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
   
@@ -17,10 +15,9 @@ const tablepage : React.FC = () => {
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
     setSearchText(e.target.value);
   }
-  
+
   return (
     <section>
       <form className='relative w-full flex-center'>
@@ -64,4 +61,3 @@ const tablepage : React.FC = () => {
   )
 }
 
-export default tablepage
