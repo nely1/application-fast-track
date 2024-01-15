@@ -4,7 +4,6 @@ import './style.css'
 import { MultiSelect } from "react-multi-select-component";
 
 // Material UI components
-import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import DangerousIcon from '@mui/icons-material/Dangerous';
@@ -19,11 +18,16 @@ const formatOptions = [
     { label: "Too Long", value: "lon" },
     { label: "Poor Formatting", value: "for" },
   ];
-
+  
 export default function MyApp() {
 
   const [selected, setSelected] = useState([]);
   const [selected2, setSelected2] = useState([]);
+
+  async function handleSubmit() {
+    console.log("Selected formatting issues: ", selected);
+    console.log("Selected qualification issues: ", selected2);
+  }
 
   return (
     <div className="flex h-screen pt-5 pl-5">
@@ -49,10 +53,10 @@ export default function MyApp() {
             />
             <div>
                 Final evaluation:
-                <Button variant="contained" endIcon={<VerifiedIcon />} color='success'>
+                <Button variant="contained" endIcon={<VerifiedIcon />} color='success' onClick={handleSubmit}>
                     Accept
                 </Button>
-                <Button variant="contained" endIcon={<DangerousIcon />} color='error'>
+                <Button variant="contained" endIcon={<DangerousIcon />} color='error'onClick={handleSubmit}>
                     Reject
                 </Button>
             </div>

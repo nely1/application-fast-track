@@ -68,7 +68,10 @@ export function loginIsRequiredClient() {
     if (typeof window !== "undefined") {
         const session = useSession();
         const router = useRouter();
-        if (!session) router.push('./');
+        if (session.status === 'unauthenticated') 
+        {return true} 
+        else 
+        {return false};
     }
 }
 
