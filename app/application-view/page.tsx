@@ -1,76 +1,62 @@
 "use client"
 import { useState } from 'react';
-
-import { pdfjs, Document, Page } from 'react-pdf';
+import './style.css'
+import { MultiSelect } from "react-multi-select-component";
 
 // Material UI components
 import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import VerifiedIcon from '@mui/icons-material/Verified';
+import DangerousIcon from '@mui/icons-material/Dangerous';
 
-import Multiselect from 'multiselect-react-dropdown';
+const qualOptions = [
+    { label: "Underqualified", value: "unq" },
+    { label: "Misinformation found", value: "mis" },
+  ];
 
-pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
-  import.meta.url,
-).toString();
-
-const options = [
-    { name: "Option 1", id: 1 },
-    { name: "Option 2", id: 2 },
-    { name: "Option 3", id: 3 },
-    { name: "Option 4", id: 4 },
-    { name: "Option 5", id: 5 }
+const formatOptions = [
+    { label: "Too Short", value: "sho" },
+    { label: "Too Long", value: "lon" },
+    { label: "Poor Formatting", value: "for" },
   ];
 
 export default function MyApp() {
-  const [numPages, setNumPages] = useState<number>();
-  const [pageNumber, setPageNumber] = useState<number>(1);
 
-  function onDocumentLoadSuccess({ numPages }: { numPages: number }): void {
-    setNumPages(numPages);
-  }
+  const [selected, setSelected] = useState([]);
+  const [selected2, setSelected2] = useState([]);
 
   return (
-    <Grid container sx={{ ml: 3, mt:3 }}>
-        {/* xs is item spacing, ml is margin spacing */}
-        <Grid item xs={5}>
-            <Document file="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" onLoadSuccess={onDocumentLoadSuccess}>
-                <Page pageNumber={pageNumber} />
-            </Document>
-        </Grid>
-        <Grid item xs={3} sx={{ ml: 8 }} >
-            {/* <input type="checkbox" id="tooshort_id" name="comments" value="too_short"/>
-            <label htmlFor="tooshort_id">Too short</label>
-
-            <input type="checkbox" id="underqualified_id" name="comments" value="underqualified"/>
-            <label htmlFor="underqualified_id">Not qualified for position</label>
-
-            <input type="checkbox" id="misleading_id" name="comments" value="misleading"/>
-            <label htmlFor="misleading_id">Suspicious information presented</label> */}
-
-            <Multiselect
-            placeholder="Formatting Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
+    <div className="flex h-screen pt-5 pl-5">
+        <div>
+            <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="100%"/>
+        </div>
+        <div className="pl-28 flex flex-col justify-around">
+            <MultiSelect
+            options={formatOptions}
+            value={selected}
+            onChange={setSelected}
+            labelledBy="Select"
+            overrideStrings={{"selectSomeItems": "Formatting Issues..."}}
+            hasSelectAll={false}
             />
-
-            <Multiselect
-            placeholder="Qualification Issues"
-            options={options}
-            onSelect={function noRefCheck(){}}
-            onRemove={function noRefCheck(){}}
-            displayValue="name"
-            closeIcon="cancel"
-            selectedValues={function noRefCheck(){}}
-            className="multiSelectContainer"
-            showCheckbox
+            <MultiSelect
+            options={qualOptions}
+            value={selected2}
+            onChange={setSelected2}
+            labelledBy="Select"
+            overrideStrings={{"selectSomeItems": "Qualification Issues..."}}
+            hasSelectAll={false}
             />
-        </Grid>
-    </Grid>
+            <div>
+                Final evaluation:
+                <Button variant="contained" endIcon={<VerifiedIcon />} color='success'>
+                    Accept
+                </Button>
+                <Button variant="contained" endIcon={<DangerousIcon />} color='error'>
+                    Reject
+                </Button>
+            </div>
+        </div>
+    </div>
   );
 }
