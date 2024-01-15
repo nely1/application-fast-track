@@ -1,6 +1,6 @@
 import React from 'react'
 import './style.css'
-
+import { NextAuthProvider } from '../provider'
 const layout = ({children} :any) => {
   return (
     <html lang="en">

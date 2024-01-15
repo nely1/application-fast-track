@@ -5,10 +5,11 @@ import { GET } from '../api/auth/[...nextauth]/route';
 import { getUserSession } from '@/lib/session';
 import { getServerSession } from 'next-auth';
 import authOption from '@/lib/auth';
+import { loginIsRequiredClient } from '@/lib/auth';
 
 const tablepage : React.FC = () => {
 
-  
+  loginIsRequiredClient();
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
   

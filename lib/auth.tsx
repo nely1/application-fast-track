@@ -1,8 +1,10 @@
 import { NextAuthOptions } from "next-auth";
-import NextAuth from "next-auth/next";
+import NextAuth, { getServerSession } from "next-auth/next";
 import GoogleProvider from 'next-auth/providers/google'
 import prisma from "@/prisma/client";
 import { session } from "@/lib/session";
+import { redirect, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!
@@ -52,6 +54,21 @@ const authOption: NextAuthOptions = {
             }
             return token
         }
+    }
+}
+
+export async function loginIsRequiredServer() {
+    const session = await getServerSession(authOption);
+    if (!session) {
+        return redirect('/');
+    }
+}
+
+export function loginIsRequiredClient() {
+    if (typeof window !== "undefined") {
+        const session = useSession();
+        const router = useRouter();
+        if (!session) router.push('./');
     }
 }
 
