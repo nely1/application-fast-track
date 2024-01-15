@@ -1,5 +1,3 @@
-"use client"
-
 import Image from 'next/image'
 
 import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
@@ -7,28 +5,21 @@ import { useState, useEffect } from 'react';
 import { useRouter, redirect } from 'next/navigation';
 import { getUserSession } from '@/lib/session';
 import { GET } from './api/auth/[...nextauth]/route';
+import {GoogleSignInButton} from './components/GoogleSignInButton';
+import {SignOutButton} from './components/SignOutButton';
+
 // this is the login page
-export default function Home() {
+export default async function Home() {
 
+  const user = await getUserSession();
 
-  
-  // if (user) {
-  //   redirect('/table');
-  // }
-  
- 
-  const handleClick = () => {
-    signIn("google");
- 
-  }
-
-  const handleSignOut = () => {
-    signOut();
-  }
 
 
   return (
+
+   
     <main className="flex min-h-screen flex-col items-center p-24">
+       {user ? (<p>{JSON.stringify(user)}</p>) : (<p>Please log in to access more features.</p>)}
       <Image
               src="/logo.svg"
               alt="NES Logo"
@@ -37,8 +28,8 @@ export default function Home() {
               height={100}
               priority
             />
-      <button type="button" onClick={handleClick} className="rounded-lg px-10 py-3 hover:bg-green-800 bg-green-700 mt-20">Sign in with Google</button> 
-      <button type="button" onClick={handleSignOut} className="rounded-lg px-10 py-3 hover:bg-green-800 bg-green-700 mt-20">Sign out</button> 
+      <GoogleSignInButton/>
+      <SignOutButton/>
 
     </main>
   )

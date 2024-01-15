@@ -12,5 +12,7 @@ export const getUserSession = async (): Promise<User> => {
         }
     })
 
+    console.log(authUserSession?.user)
+
     return authUserSession?.user
 }

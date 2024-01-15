@@ -17,6 +17,7 @@ const tablepage : React.FC = () => {
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     setSearchText(e.target.value);
   }
   
