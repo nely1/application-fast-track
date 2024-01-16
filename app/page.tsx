@@ -6,8 +6,8 @@ import { useRouter, redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
 import { getUserSession } from '@/lib/session';
 import { GET } from './api/auth/[...nextauth]/route';
-import {GoogleSignInButton} from './components/GoogleSignInButton';
-import {SignOutButton} from './components/SignOutButton';
+import {GoogleSignInButton} from '../components/GoogleSignInButton';
+import {SignOutButton} from '../components/SignOutButton';
 
 // this is the login page
 export default async function Home() {
