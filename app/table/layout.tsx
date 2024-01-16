@@ -1,24 +1,17 @@
-import React from 'react'
+'use client'
 import './style.css'
-import { NextAuthProvider } from '../provider'
+import { NextAuthProvider } from '../provider';
+import { signOut } from 'next-auth/react';
+import {Navbar} from '@/components/Navbar';
 const layout = ({children} :any) => {
+
   return (
-    <html lang="en">
-    <body suppressHydrationWarning={true}>
-      <nav className="navbar">
-      <a href="#" className="nav-logo">NES</a>
-      <ul className="nav-menu">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Login</a></li>
-      </ul>
-      </nav>
-      
+
+      <main suppressHydrationWarning={true}>
+      <Navbar/>
       {children}
-      </body>
-    </html>
+      </main>
+    
   )
 }
 

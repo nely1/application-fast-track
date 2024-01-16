@@ -1,5 +1,5 @@
 import { NextAuthOptions } from "next-auth";
-import NextAuth, { getServerSession } from "next-auth/next";
+import {getServerSession } from "next-auth/next";
 import GoogleProvider from 'next-auth/providers/google'
 import prisma from "@/prisma/client";
 import { session } from "@/lib/session";
@@ -68,10 +68,7 @@ export function loginIsRequiredClient() {
     if (typeof window !== "undefined") {
         const session = useSession();
         const router = useRouter();
-        if (session.status === 'unauthenticated') 
-        {return true} 
-        else 
-        {return false};
+        if (session.status === 'unauthenticated') return true;     
     }
 }
 

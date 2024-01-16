@@ -14,14 +14,15 @@ export default async function Home() {
 
   const session = await getServerSession();
   
-
-
+  if (session?.user) {
+    redirect('/table');
+  }
 
   return (
 
    
     <main className="flex min-h-screen flex-col items-center p-24">
-       {session ? (<p>{JSON.stringify(session.user)}</p>) : (<p>Please log in to access more features.</p>)}
+       {/* {session ? (<p>{JSON.stringify(session?.user)}</p>) : (<p>Please log in to access more features.</p>)} */}
       <Image
               src="/logo.svg"
               alt="NES Logo"
@@ -32,7 +33,6 @@ export default async function Home() {
             />
     
       <GoogleSignInButton/>
-      <SignOutButton/>
 
     </main>
   )

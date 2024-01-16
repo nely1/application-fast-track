@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 
 
-export default function postingTable() {
+export function PostingTable() {
 
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
@@ -19,7 +19,7 @@ export default function postingTable() {
   }
 
   return (
-    <section>
+    <div>
       <form className='relative w-full flex-center'>
         <input
           type="text"
@@ -57,7 +57,8 @@ export default function postingTable() {
           </tr>
         </tbody>
     </table>
-  </section>
+  </div>
   )
 }
 
+export default PostingTable;

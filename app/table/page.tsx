@@ -1,71 +1,27 @@
-"use client"
+
 import {useState, useEffect, ChangeEvent} from 'react'
 import { redirect, useRouter } from "next/navigation";
 import { GET } from '../api/auth/[...nextauth]/route';
 import { getUserSession } from '@/lib/session';
 import { getServerSession } from 'next-auth';
 import authOption from '@/lib/auth';
-import { loginIsRequiredClient } from '@/lib/auth';
+import  {loginIsRequiredClient, loginIsRequiredServer}  from '@/lib/auth';
+import { useSession } from 'next-auth/react';
+import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
+import {PostingTable} from '@/components/PostingTable';
 
-const tablepage : React.FC = () => {
-  if (loginIsRequiredClient()) {
-    const router = useRouter();
-    router.push('./')
-  } else {
-    const router = useRouter();
-    const [searchText, setSearchText] = useState("");
-    
-    const handleClick = () => {
-        router.push("/");
-    }
 
-    const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        setSearchText(e.target.value);
-    }
-    
+// const checkLogin = () => {
+//     return loginIsRequiredClient();
+// }
+export async function tablepage() {
+
+    const loginCheck = await loginIsRequiredServer();
+        
     return (
-        <section>
-        <form className='relative w-full flex-center'>
-            <input
-            type="text"
-            placeholder='Search job posting'
-            value = {searchText}
-            onChange={handleSearchChange}
-            className=''
-            />
-        </form>
-        <table>
-            <thead>
-            <tr>
-                <th>No.</th>
-                <th>Job posting</th>
-                <th>Number of applications</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr className="hover:bg-gray-700 hover:text-blue-500">
-                <td><button type="button" onClick={() => handleClick()} className="w-full text-left">1</button></td>
-                <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">Software engineer position for NES web platform</button></td>
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">101</button></td> 
-            </tr>
-
-            <tr className="hover:bg-gray-700 hover:text-blue-500">
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">2</button></td>
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Project Manager position for NES web platform</button></td>
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">200</button></td>
-            </tr>
-            
-            <tr className="hover:bg-gray-700 hover:text-blue-500">
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">3</button></td>
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Intern position for NES web platform</button></td>
-                <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">10000</button></td>
-            </tr>
-            </tbody>
-        </table>
-    </section>
+        <PostingTable/>
     )
-  }
 }
 
-export default tablepage
+
+export default tablepage;
