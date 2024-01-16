@@ -1,12 +1,18 @@
 "use client"
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+
 export function SignOutButton() {
-    const handleClick = () => {
+  
+  const router = useRouter();
+
+  const handleClick = () => {
       signOut();
+      router.push('/');
     };
   
     return (
-        <button type="button" onClick={handleClick} className="rounded-lg px-10 py-3 hover:bg-green-800 bg-green-700 mt-20">Sign out</button> 
+      <li><a href="/" onClick={handleClick}>Logout</a></li>
     );
   }
   

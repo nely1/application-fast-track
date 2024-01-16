@@ -2,16 +2,30 @@
 
 import {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
-
+import { useSession } from 'next-auth/react';
 
 
 export function PostingTable() {
 
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
-  
+  const [postings, setPostings] = useState([]);
+  const {data: session} = useSession();
+
+  useEffect(() => {
+    const fetchPostings = async () => {
+      const response = await fetch(`/api/company/${session?.user?.email}/postings`);
+      const data = await response.json();
+      setPostings(data);
+    }
+
+    if (session?.user?.id) {
+      fetchPostings();
+    }
+  }, [session?.user?.id]);
+
   const handleClick = () => {
-    router.push("/");
+    router.push("/application-view");
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
