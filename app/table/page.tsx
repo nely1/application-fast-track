@@ -8,7 +8,7 @@ import authOption from '@/lib/auth';
 import  {loginIsRequiredClient, loginIsRequiredServer}  from '@/lib/auth';
 import { useSession } from 'next-auth/react';
 import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime';
-import {PostingTable} from '@/components/PostingTable';
+import {PostingTable} from '@/components/postingTable';
 
 
 // const checkLogin = () => {

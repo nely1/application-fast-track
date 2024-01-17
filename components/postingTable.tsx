@@ -11,6 +11,11 @@ export function PostingTable() {
   const [searchText, setSearchText] = useState("");
   const [postings, setPostings] = useState([]);
   const {data: session} = useSession();
+  const products = [
+    { no: 1, name: 'Software engineer position for NES web platform', applications: 101},
+    { no: 2, name: 'Project Manager position for NES web platform', applications: 200},
+    { no: 3, name: 'Intern position for NES web platform', applications: 10000}
+  ]
 
   useEffect(() => {
     const fetchPostings = async () => {
@@ -52,7 +57,14 @@ export function PostingTable() {
           </tr>
         </thead>
         <tbody>
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
+          {products.map(product => (
+            <tr key={product.no}>
+              <td>{product.name}</td>
+              <td>{product.applications}</td>
+            </tr>
+          ))
+
+          /* <tr className="hover:bg-gray-700 hover:text-blue-500">
             <td><button type="button" onClick={() => handleClick()} className="w-full text-left">1</button></td>
             <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">Software engineer position for NES web platform</button></td>
             <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">101</button></td> 
@@ -68,7 +80,7 @@ export function PostingTable() {
             <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">3</button></td>
             <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Intern position for NES web platform</button></td>
             <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">10000</button></td>
-          </tr>
+          </tr> */}
         </tbody>
     </table>
   </div>
