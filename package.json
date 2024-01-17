@@ -7,17 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "devStart": "nodemon data-script.ts"
+    "devStart": "nodemon data-script.ts",
+    "gmail": "nodemon ./app/email-manager/googleapis.tsx"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
+    "@google-cloud/local-auth": "^2.1.0",
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
     "@prisma/client": "^5.8.0",
     "@vercel/postgres": "^0.5.1",
     "@wojtekmaj/react-hooks": "^1.18.1",
     "bcrypt": "^5.1.1",
+    "googleapis": "^105.0.0",
     "multiselect-react-dropdown": "^2.0.25",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
