@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect, ChangeEvent} from 'react'
+import React, {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -11,11 +11,36 @@ export function PostingTable() {
   const [searchText, setSearchText] = useState("");
   const [postings, setPostings] = useState([]);
   const {data: session} = useSession();
-  const products = [
-    { no: 1, name: 'Software engineer position for NES web platform', applications: 101},
-    { no: 2, name: 'Project Manager position for NES web platform', applications: 200},
-    { no: 3, name: 'Intern position for NES web platform', applications: 10000}
+  const data = [
+    { id: 1, name: 'Software engineer position for NES web platform', applications: 101},
+    { id: 2, name: 'Project Manager position for NES web platform', applications: 200},
+    { id: 3, name: 'Intern position for NES web platform', applications: 10000}
   ]
+
+  const [sortField, setSortField] = useState("");
+  const [order, setOrder] = useState("asc");
+  const [tableData, setTableData] = useState(data);
+
+  const handleSorting = (sortField: string, sortOrder: string) => {
+    if (sortField) {
+     const sorted = [...data].sort((a, b) => {
+      return (
+       a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
+        numeric: true,
+       }) * (sortOrder === "asc" ? 1 : -1)
+      );
+     });
+     setTableData(sorted);
+    }
+   };
+
+  const handleSortingChange = (accessor: string) => {
+    const sortOrder =
+      accessor === sortField && order === "asc" ? "desc" : "asc";
+    setSortField(accessor);
+    setOrder(sortOrder);
+    handleSorting(accessor, sortOrder);
+  };
 
   useEffect(() => {
     const fetchPostings = async () => {
@@ -51,36 +76,19 @@ export function PostingTable() {
       <table>
         <thead>
           <tr>
-            <th>No.</th>
-            <th>Job posting</th>
-            <th>Number of applications</th>
+            <th><button type="button" onClick={() => handleSortingChange('id')}>No.</button></th>
+            <th><button type="button" onClick={() => handleSortingChange('name')}>Job Posting</button></th>
+            <th><button type="button" onClick={() => handleSortingChange('applications')}>Number of Applications</button></th>
           </tr>
         </thead>
         <tbody>
-          {products.map(product => (
-            <tr key={product.no}>
-              <td>{product.name}</td>
-              <td>{product.applications}</td>
+          {data.map(product => (
+            <tr className="hover:bg-gray-700 hover:text-blue-500" key={product.id}>
+              <td><button type="button" onClick={() => handleClick()} className="w-full text-left">{product.id}</button></td>
+              <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">{product.name}</button></td>
+              <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">{product.applications}</button></td> 
             </tr>
-          ))
-
-          /* <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button type="button" onClick={() => handleClick()} className="w-full text-left">1</button></td>
-            <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">Software engineer position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">101</button></td> 
-          </tr>
-
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">2</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Project Manager position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">200</button></td>
-          </tr>
-          
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">3</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Intern position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">10000</button></td>
-          </tr> */}
+          ))}
         </tbody>
     </table>
   </div>
