@@ -3,75 +3,73 @@
 import {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { Posting } from '@/lib/interfaces';
+import {Loading} from '@/components/loading'
 
 
-export function PostingTable() {
+export function PostingTable({data}:any) {
 
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
-  const [postings, setPostings] = useState([]);
+  const [postings, setPostings] = useState<Posting[]>([]);
   const {data: session} = useSession();
+  const [load, setLoad] = useState<Boolean>(true);
 
   useEffect(() => {
     const fetchPostings = async () => {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);
       const data = await response.json();
-      setPostings(data);
+      setPostings(data);   
+      setLoad(!load);
     }
-
-    if (session?.user?.id) {
+    if (session?.user?.email) {
       fetchPostings();
+      
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.email]);
 
-  const handleClick = () => {
-    router.push("/application-view");
+
+  const handleClick = (id: number) => {
+    router.push(`/table/${id}/applications`);
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   }
 
-  return (
-    <div>
-      <form className='relative w-full flex-center'>
-        <input
-          type="text"
-          placeholder='Search job posting'
-          value = {searchText}
-          onChange={handleSearchChange}
-          className=''
-        />
-      </form>
-      <table>
-        <thead>
-          <tr>
-            <th>No.</th>
-            <th>Job posting</th>
-            <th>Number of applications</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button type="button" onClick={() => handleClick()} className="w-full text-left">1</button></td>
-            <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">Software engineer position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">101</button></td> 
-          </tr>
-
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">2</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Project Manager position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">200</button></td>
-          </tr>
-          
-          <tr className="hover:bg-gray-700 hover:text-blue-500">
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">3</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">Intern position for NES web platform</button></td>
-            <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">10000</button></td>
-          </tr>
-        </tbody>
-    </table>
-  </div>
+  return (load ? (<Loading/>) : (
+      <div>
+        <form className='relative w-full flex-center'>
+          <input
+            type="text"
+            placeholder='Search job posting'
+            value = {searchText}
+            onChange={handleSearchChange}
+            className=''
+          />
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Job posting</th>
+              <th>Number of applications</th>
+            </tr>
+          </thead>
+          <tbody>
+            {postings.map((posting: Posting, index: number) => (   
+              <tr key={index} className="hover:bg-gray-700 hover:text-blue-500">
+                <td><button type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{index + 1}</button></td>
+                <td><button   type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.title}</button></td>
+                <td><button  type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.applications.length}</button></td> 
+              </tr>  
+                )
+              )
+            }
+          </tbody>
+      </table>
+    </div>
+    )
   )
 }
 

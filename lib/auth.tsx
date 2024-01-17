@@ -9,7 +9,7 @@ import { useSession } from "next-auth/react";
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!
 
-const authOption: NextAuthOptions = {
+export const authOption: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
@@ -61,6 +61,9 @@ export async function loginIsRequiredServer() {
     const session = await getServerSession(authOption);
     if (!session) {
         return redirect('/');
+    }
+    else {
+        return session;
     }
 }
 

@@ -1,13 +1,8 @@
 import Image from 'next/image'
-
-import {signIn, signOut, useSession, getProviders } from 'next-auth/react';
-import { useState, useEffect } from 'react';
-import { useRouter, redirect } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import { getServerSession } from 'next-auth';
-import { getUserSession } from '@/lib/session';
-import { GET } from './api/auth/[...nextauth]/route';
 import {GoogleSignInButton} from '../components/GoogleSignInButton';
-import {SignOutButton} from '../components/SignOutButton';
+
 
 // this is the login page
 export default async function Home() {
