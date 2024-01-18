@@ -1,6 +1,6 @@
 "use client";
 
-import {useState, useEffect, ChangeEvent} from 'react'
+import React, {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Posting } from '@/lib/interfaces';
@@ -14,6 +14,28 @@ export function PostingTable({data}:any) {
   const [postings, setPostings] = useState<Posting[]>([]);
   const {data: session} = useSession();
   const [load, setLoad] = useState<Boolean>(true);
+  const [sortField, setSortField] = useState("");
+  const [order, setOrder] = useState("asc");
+
+  const handleSorting = (sortField: string, sortOrder: string) => {
+    if (sortField) {
+     const sorted = [...postings].sort((a, b) => {
+      return (
+       a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
+        numeric: true,
+      );
+     });
+     setPostings(sorted);
+    }
+   };
+
+  const handleSortingChange = (accessor: string) => {
+    const sortOrder =
+      accessor === sortField && order === "asc" ? "desc" : "asc";
+    setSortField(accessor);
+    setOrder(sortOrder);
+    handleSorting(accessor, sortOrder);
+  };
 
   useEffect(() => {
     const fetchPostings = async () => {
@@ -51,9 +73,9 @@ export function PostingTable({data}:any) {
         <table>
           <thead>
             <tr>
-              <th>No.</th>
-              <th>Job posting</th>
-              <th>Number of applications</th>
+              <th><button type="button" onClick={() => handleSortingChange('id')}>No.</button></th>
+              <th><button type="button" onClick={() => handleSortingChange('name')}>Job Posting</button></th>
+              <th><button type="button" onClick={() => handleSortingChange('applications')}>Number of Applications</button></th>
             </tr>
           </thead>
           <tbody>
@@ -70,6 +92,7 @@ export function PostingTable({data}:any) {
       </table>
     </div>
     )
+
   )
 }
 
