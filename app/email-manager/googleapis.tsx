@@ -72,63 +72,54 @@ async function authorize() {
 }
 
 /**
- * Lists the labels in the user's account.
+ * Uploads pdf in the user's account that matches the query term.
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
 async function getEmails(auth) {
-  const emailNumber = 0;
+  const queryTerms = "{subject:\"Internship at NES\" newer_than:1h}";
   const gmail = google.gmail({version: 'v1', auth});
   const res = await gmail.users.messages.list({
     userId: 'me',
+    q: queryTerms,
   });
   
   const messages = res.data;
-  if (!messages || messages.length === 0) {
+  if (messages.resultSizeEstimate === 0) {
     console.log('No emails found.');
     return;
   } else {
 
-    const firstEmail = await gmail.users.messages.get({
-      userId: 'me',
-      id: messages.messages[emailNumber].id,
-    });
+    for (const applicants of res.data.messages){
+      const applicantEmail = await gmail.users.messages.get({
+        userId: 'me',
+        id: applicants.id,
+      });
 
-    var subjectTitle = "";
-    for (const header of firstEmail.data.payload.headers) {
-        if (header.name === 'Subject') {
-          subjectTitle = header.value;
+      var resumeName = "";
+      var resumeAttachmentID = "";
+      for (const attachments of applicantEmail.data.payload.parts) {
+        if (attachments.mimeType === 'application/pdf') {
+          resumeName = attachments.filename;
+          resumeAttachmentID = attachments.body.attachmentId; 
           break;
         }
-    }
-    if (subjectTitle) {
-      console.log("This is the subject title: " + subjectTitle);
-    } else {
-      console.log("Applicant had no title in their email.");
-    }
-
-    var resumeName = "";
-    var resumeAttachmentID = "";
-    for (const attachments of firstEmail.data.payload.parts) {
-      if (attachments.mimeType === 'application/pdf') {
-        resumeName = attachments.filename;
-        resumeAttachmentID = attachments.body.attachmentId; 
-        break;
+      }
+  
+      if (resumeAttachmentID) {
+        // const resume = await google.gmail('v1').users.messages.attachments.get({
+        //   auth: auth,
+        //   userId: 'me', 
+        //   id: resumeAttachmentID,
+        //   messageId: applicants.id
+        // });
+        console.log("The pdf name uploaded is: " + resumeName);
+        // fs.writeFile(resumeName, decodeBase64(resume.data.data));
+      } else {
+        console.log("No resume attached")
       }
     }
-
-    if (resumeAttachmentID) {
-      const resume = await google.gmail('v1').users.messages.attachments.get({
-        auth: auth,
-        userId: 'me', 
-        id: resumeAttachmentID,
-        messageId: messages.messages[emailNumber].id
-      });
-      fs.writeFile(resumeName, decodeBase64(resume.data.data));
-    } else {
-      console.log("No resume attached")
-    }
-  }
+  }    
 }
 
 export async function GetGmails() {
