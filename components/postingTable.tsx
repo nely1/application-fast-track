@@ -20,7 +20,7 @@ export function PostingTable({data}:any) {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);
       const data = await response.json();
       setPostings(data);   
-      setLoad(!load);
+      setLoad(!load); 
     }
     if (session?.user?.email) {
       fetchPostings();

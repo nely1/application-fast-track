@@ -1,6 +1,5 @@
 import  {loginIsRequiredServer}  from '@/lib/auth';
 import {ApplicationTable} from '@/components/ApplicationTable';
-import { useSearchParams } from 'next/navigation';
 
 interface Props {
     params: {id: number}

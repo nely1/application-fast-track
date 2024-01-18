@@ -1,9 +1,7 @@
 "use client";
 
 import {useState, useEffect, ChangeEvent} from 'react'
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useSession } from 'next-auth/react';
-import { Posting } from '@/lib/interfaces';
+import { useRouter } from 'next/navigation';
 import { Application } from '@/lib/interfaces';
 import {Loading} from '@/components/loading'
 
