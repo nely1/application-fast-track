@@ -98,22 +98,25 @@ async function getEmails(auth) {
 
     console.log("This is the subject title: ")
 
-    for (const header of firstEmail.data.payload.headers) {
-        if (header.name === 'Subject') {
-            console.log(header.value);
-        }
-    }
+    // for (const header of firstEmail.data.payload.headers) {
+    //     if (header.name === 'Subject') {
+    //         console.log(header.value);
+    //     }
+    // }
 
     // console.log("\nThis is the attachments: ")
-    // const attachmentId = 'ANGjdJ-2xwZRda_PkAEoYM5big0DJNfZODBhCdqffhw66Xe-nu2ZosvrPMAXQs1NkpDIskrxQtjxZJmmrmzmKl_j9aT2ThIe1sbKxhTe9of1IliS8biKSr3l4moXE_UezK6Qv-RKIWlqUsQaBHbbbgHgC8gbd38Z6pmYyyoICFlqWi2XYvqb4vkpMwAlJo-chjBmIcd-yG9FVh1V04de-Gm-hUgfGXCUKo5lvI_Z0l3zAhzfSbMgrROgllffzvQH6ipct2_mQw8qLJL-WCAUSo8FQYM0oKAxmDAL9cV2YgCajkhsEANVSzPlPaO4TWk'
+    const attachmentId = 'ANGjdJ-2xwZRda_PkAEoYM5big0DJNfZODBhCdqffhw66Xe-nu2ZosvrPMAXQs1NkpDIskrxQtjxZJmmrmzmKl_j9aT2ThIe1sbKxhTe9of1IliS8biKSr3l4moXE_UezK6Qv-RKIWlqUsQaBHbbbgHgC8gbd38Z6pmYyyoICFlqWi2XYvqb4vkpMwAlJo-chjBmIcd-yG9FVh1V04de-Gm-hUgfGXCUKo5lvI_Z0l3zAhzfSbMgrROgllffzvQH6ipct2_mQw8qLJL-WCAUSo8FQYM0oKAxmDAL9cV2YgCajkhsEANVSzPlPaO4TWk'
 
-    // const resume = await google.gmail('v1').users.messages.attachments.get({
-    //   userId: 'me',
-    //   id: attachmentId
-    // });
-    // console.log(resume)
-    // const attachmentPart = firstEmail.data.payload.parts[1];
-    // fs.writeFile(attachmentPart.filename, decodeBase64(attachmentPart.data));
+    const resume = await google.gmail('v1').users.messages.attachments.get({
+      auth: auth,
+      userId: 'me',
+      id: attachmentId,
+      messageId: messages.messages[emailNumber].id
+    });
+
+    console.log(resume);
+
+    fs.writeFile("resume.pdf", decodeBase64(resume.data.data));
 
   }
 
