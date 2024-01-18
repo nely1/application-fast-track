@@ -19,21 +19,25 @@ export function PostingTable({data}:any) {
 
   const handleSorting = (sortField: string, sortOrder: string) => {
     if (sortField) {
-     const sorted = [...postings].sort((a, b) => {
-      return (
-       a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
-        numeric: true,
-      );
-     });
-     setPostings(sorted);
-    }
-   };
+      const sorted = [...postings].sort((a, b) => {
+        if (sortOrder === "desc") {
+          const temp = a;
+          a = b;
+          b = temp;
+        }
+        return (
+         a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
+          numeric: true,}));  
+        })
+      setPostings(sorted);
+    };
+  }
 
   const handleSortingChange = (accessor: string) => {
-    const sortOrder =
-      accessor === sortField && order === "asc" ? "desc" : "asc";
+    const sortOrder = (accessor === sortField && order === "asc") ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
+    console.log(sortOrder);
     handleSorting(accessor, sortOrder);
   };
 
@@ -73,8 +77,8 @@ export function PostingTable({data}:any) {
         <table>
           <thead>
             <tr>
-              <th><button type="button" onClick={() => handleSortingChange('id')}>No.</button></th>
-              <th><button type="button" onClick={() => handleSortingChange('name')}>Job Posting</button></th>
+              <th>No. </th>
+              <th><button type="button" onClick={() => handleSortingChange('title')}>Job Posting</button></th>
               <th><button type="button" onClick={() => handleSortingChange('applications')}>Number of Applications</button></th>
             </tr>
           </thead>
