@@ -21,3 +21,15 @@
 // }
 
 // main();
+
+// 2nd one
+
+// foreach(company) 
+    // await (where time > latest job posting title in subject) n times
+    // gmail
+    // await (pushing to the database)
+
+//1st one
+// await (where time > latest) once
+// has all and then sort
+// await (push)

@@ -7,7 +7,7 @@ import { Posting } from '@/lib/interfaces';
 import {Loading} from '@/components/loading'
 
 
-export function PostingTable({data}:any) {
+export function PostingTable() {
 
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
@@ -17,6 +17,7 @@ export function PostingTable({data}:any) {
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
 
+  // sort tables in terms of field
   const handleSorting = (sortField: string, sortOrder: string) => {
     if (sortField) {
       const sorted = [...postings].sort((a, b) => {
@@ -41,6 +42,7 @@ export function PostingTable({data}:any) {
     handleSorting(accessor, sortOrder);
   };
 
+  // fetch data to display for table
   useEffect(() => {
     const fetchPostings = async () => {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);

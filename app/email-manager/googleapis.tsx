@@ -120,7 +120,7 @@ async function getEmails(auth) {
     if (resumeAttachmentID) {
       const resume = await google.gmail('v1').users.messages.attachments.get({
         auth: auth,
-        userId: 'me',
+        userId: 'me', 
         id: resumeAttachmentID,
         messageId: messages.messages[emailNumber].id
       });
@@ -131,4 +131,8 @@ async function getEmails(auth) {
   }
 }
 
-authorize().then(getEmails).catch(console.error);
+export async function GetGmails() {
+  await authorize().then(getEmails).catch(console.error)
+};
+
+export default GetGmails;
