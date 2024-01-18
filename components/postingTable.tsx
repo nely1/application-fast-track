@@ -3,34 +3,29 @@
 import React, {useState, useEffect, ChangeEvent} from 'react'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { Posting } from '@/lib/interfaces';
+import {Loading} from '@/components/loading'
 
 
-export function PostingTable() {
+export function PostingTable({data}:any) {
 
   const router = useRouter();
   const [searchText, setSearchText] = useState("");
-  const [postings, setPostings] = useState([]);
+  const [postings, setPostings] = useState<Posting[]>([]);
   const {data: session} = useSession();
-  const data = [
-    { id: 1, name: 'Software engineer position for NES web platform', applications: 101},
-    { id: 2, name: 'Project Manager position for NES web platform', applications: 200},
-    { id: 3, name: 'Intern position for NES web platform', applications: 10000}
-  ]
-
+  const [load, setLoad] = useState<Boolean>(true);
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
-  const [tableData, setTableData] = useState(data);
 
   const handleSorting = (sortField: string, sortOrder: string) => {
     if (sortField) {
-     const sorted = [...data].sort((a, b) => {
+     const sorted = [...postings].sort((a, b) => {
       return (
        a[sortField].toString().localeCompare(b[sortField].toString(), "en", {
         numeric: true,
-       }) * (sortOrder === "asc" ? 1 : -1)
       );
      });
-     setTableData(sorted);
+     setPostings(sorted);
     }
    };
 
@@ -46,52 +41,58 @@ export function PostingTable() {
     const fetchPostings = async () => {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);
       const data = await response.json();
-      setPostings(data);
+      setPostings(data);   
+      setLoad(!load); 
     }
-
-    if (session?.user?.id) {
+    if (session?.user?.email) {
       fetchPostings();
+      
     }
-  }, [session?.user?.id]);
+  }, [session?.user?.email]);
 
-  const handleClick = () => {
-    router.push("/application-view");
+
+  const handleClick = (id: number) => {
+    router.push(`/table/${id}/applications`);
   }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
   }
 
-  return (
-    <div>
-      <form className='relative w-full flex-center'>
-        <input
-          type="text"
-          placeholder='Search job posting'
-          value = {searchText}
-          onChange={handleSearchChange}
-          className=''
-        />
-      </form>
-      <table>
-        <thead>
-          <tr>
-            <th><button type="button" onClick={() => handleSortingChange('id')}>No.</button></th>
-            <th><button type="button" onClick={() => handleSortingChange('name')}>Job Posting</button></th>
-            <th><button type="button" onClick={() => handleSortingChange('applications')}>Number of Applications</button></th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(product => (
-            <tr className="hover:bg-gray-700 hover:text-blue-500" key={product.id}>
-              <td><button type="button" onClick={() => handleClick()} className="w-full text-left">{product.id}</button></td>
-              <td><button   type="button" onClick={() => handleClick()} className="w-full text-left">{product.name}</button></td>
-              <td><button  type="button" onClick={() => handleClick()} className="w-full text-left">{product.applications}</button></td> 
+  return (load ? (<Loading/>) : (
+      <div>
+        <form className='relative w-full flex-center'>
+          <input
+            type="text"
+            placeholder='Search job posting'
+            value = {searchText}
+            onChange={handleSearchChange}
+            className=''
+          />
+        </form>
+        <table>
+          <thead>
+            <tr>
+              <th><button type="button" onClick={() => handleSortingChange('id')}>No.</button></th>
+              <th><button type="button" onClick={() => handleSortingChange('name')}>Job Posting</button></th>
+              <th><button type="button" onClick={() => handleSortingChange('applications')}>Number of Applications</button></th>
             </tr>
-          ))}
-        </tbody>
-    </table>
-  </div>
+          </thead>
+          <tbody>
+            {postings.map((posting: Posting, index: number) => (   
+              <tr key={index} className="hover:bg-gray-700 hover:text-blue-500">
+                <td><button type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{index + 1}</button></td>
+                <td><button   type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.title}</button></td>
+                <td><button  type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.applications.length}</button></td> 
+              </tr>  
+                )
+              )
+            }
+          </tbody>
+      </table>
+    </div>
+    )
+
   )
 }
 

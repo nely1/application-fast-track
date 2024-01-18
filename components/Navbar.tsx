@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 export function Navbar() {
 
   const session = useSession();
-  console.log(session); 
+
   return (
     <nav className="navbar">
       <a href="/table" className="nav-logo">NES</a>
