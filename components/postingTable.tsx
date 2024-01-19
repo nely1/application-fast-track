@@ -16,6 +16,7 @@ export function PostingTable() {
   const [load, setLoad] = useState<Boolean>(true);
   const [sortField, setSortField] = useState("");
   const [order, setOrder] = useState("asc");
+ 
 
   // sort tables in terms of field
   const handleSorting = (sortField: string, sortOrder: string) => {
@@ -38,17 +39,21 @@ export function PostingTable() {
     const sortOrder = (accessor === sortField && order === "asc") ? "desc" : "asc";
     setSortField(accessor);
     setOrder(sortOrder);
-    console.log(sortOrder);
     handleSorting(accessor, sortOrder);
+    
   };
 
   // fetch data to display for table
   useEffect(() => {
+    console.log("it is the start")
     const fetchPostings = async () => {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);
+      console.log(response);
       const data = await response.json();
       if (data) {
         setPostings(data);   
+        console.log(postings);
+        console.log("the conditional is reached");
       }
       setLoad(!load); 
     }
@@ -58,30 +63,33 @@ export function PostingTable() {
     }
   }, [session?.user?.email]);
 
-  
+
   const handleClick = (posting: Posting) => {
     router.push(`/table/${posting.id}/applications`);
   }
 
-  const handleSearch = (searchText: string) => {
-    if (searchText) {
-      var filter = searchText.toUpperCase();
-      var titleArray = postings.map(function (posting) { return posting.title; })
-      const searched = [...postings].filter(checkTitle => {
-        for (var i=0; i < titleArray.length; i++) {
-          var title = titleArray[i].toUpperCase();
-          if (title.includes(filter)){
-            return true;
-          }
-        } 
-      })
-      setPostings(searched);
-    };
-  }
+  // const handleSearch = (searchText: string) => {
+  //   if (searchText) {
+  //     var filter = searchText.toUpperCase();
+  //     var titleArray = postings.map(function (posting) { return posting.title; })
+  //     const searched = [...postings].filter(() => {
+  //       for (var i=0; i < titleArray.length; i++) {
+  //         var title = titleArray[i].toUpperCase();
+  //         if (title.includes(filter)){
+  //           return true;
+  //         }
+  //       } 
+  //     })
+  //     displayPostings = searched;
+  //     console.log(searched);
+  //   };
+  // }
 
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
     setSearchText(e.target.value);
-    handleSearch(searchText);
+    console.log(e.target.value)
+    // handleSearch(searchText);
   }
 
   return (load ? (<Loading/>) : (
@@ -89,10 +97,10 @@ export function PostingTable() {
         <form className='relative w-full flex-center'>
           <input
             type="text"
+            name="searching"
             placeholder='Search job posting'
             value = {searchText}
             onChange={handleSearchChange}
-            className=''
           />
         </form>
         <table>
