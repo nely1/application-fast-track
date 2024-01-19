@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "devStart": "nodemon data-script.ts",
-    "gmail": "nodemon ./app/email-manager/googleapis.tsx"
+    "gmail": "nodemon ./app/email-manager/googleapis.tsx",
+    "email": "email dev --dir ./app/emails"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
@@ -17,6 +18,7 @@
     "@mui/icons-material": "^5.15.4",
     "@mui/material": "^5.15.4",
     "@prisma/client": "^5.8.0",
+    "@react-email/components": "0.0.14",
     "@vercel/blob": "^0.18.0",
     "@vercel/postgres": "^0.5.1",
     "@wojtekmaj/react-hooks": "^1.18.1",
@@ -29,8 +31,10 @@
     "nodemon": "^3.0.2",
     "react": "^18",
     "react-dom": "^18",
+    "react-email": "1.10.1",
     "react-multi-select-component": "^4.3.4",
-    "react-pdf": "^7.7.0"
+    "react-pdf": "^7.7.0",
+    "resend": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.11.0",

@@ -25,6 +25,12 @@ export default function MyApp() {
   const [selected2, setSelected2] = useState([]);
 
   async function handleSubmit() {
+    await fetch('/api/email', {
+      method: 'POST',
+      body: JSON.stringify({
+        name: 'Pat'
+      })
+    })
     console.log("Selected formatting issues: ", selected);
     console.log("Selected qualification issues: ", selected2);
   }
