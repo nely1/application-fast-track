@@ -7,14 +7,16 @@ const resend = new Resend(process.env.RESEND_KEY);
 
 export async function POST(request: Request) {
   const  comments  = await request.json();
-
+  const formatting = comments.formatting;
+  const qualifications = comments.qualifications;
   await resend.emails.send({
     from: 'onboarding@resend.dev',
-    to: 'engjiaee@gmail.com',
+    to: 'engjiaee@gmail.com',  // email of applicant
     subject: 'Application outcome',
     react: NESEmail({
         formatting,
-        qualifications
+        qualifications,
+        "posting"  // posting of applicant
     }), 
   });
   

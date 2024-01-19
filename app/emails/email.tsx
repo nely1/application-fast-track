@@ -11,12 +11,12 @@ import {
 } from "@react-email/components";
 
 interface EmailProps {
-  formatting: string,
-  qualifications: string,
-  posting: string
+  formatting: Array<{label: string, value:string}>,
+  qualifications: Array<{label: string, value:string}>,
+  posting: string,
 }
 
-export const NESEmail = ({ posting }: EmailProps) => (
+export const NESEmail = ({ formatting, qualifications, posting }: EmailProps) => (
   <Html>
     <Head />
     <Preview>Application details</Preview>
@@ -32,7 +32,7 @@ export const NESEmail = ({ posting }: EmailProps) => (
           <Hr style={hr} />
           <Text style={paragraph}>
             Dear applicant, 
-            <br/>We want to express our appreciation for your interest in the Internship position at NES. 
+            <br/>We want to express our appreciation for your interest in the {posting}. 
             <br/><br/>We carefully reviewed all applications, including yours, and we were genuinely impressed with the skills and experiences you bring to the table. 
             It was a highly competitive process, and we regret to inform you that we have chosen to move forward with another candidate whose qualifications more closely align with our current needs.
             
@@ -44,18 +44,39 @@ export const NESEmail = ({ posting }: EmailProps) => (
           <Text style={paragraph}>
             Formatting issues:
           </Text>
-          <Text style={paragraph}>  
-            1. The resume is too short
-            2. The resume is poorly spaced
+          <Text style={paragraph}>             
+    
+            {formatting.length > 0 ? (
+              formatting.map((item, index) => (
+                <Text key={index} style={paragraph}>
+                  {index + 1}. {item.label}
+                </Text>
+              ))
+            ) : (
+              <Text style={paragraph}>
+                No issues detected
+              </Text>
+            )}
+  
           </Text>
           <Text style={paragraph}>
             Qualification issues:
           </Text>
           <Text style={paragraph}>
-           None, good job!
+            {qualifications.length > 0 ? (
+              formatting.map((item, index) => (
+                <Text key={index} style={paragraph}>
+                  {index + 1}. {item.label}
+                </Text>
+              ))
+            ) : (
+              <Text style={paragraph}>
+                No issues detected
+              </Text>
+            )}
           </Text>
           <Text style={footer}>
-            NES team, Summer Hackathon CISSA
+            NES team, SummerHack CISSA 2024 Ltd
           </Text>
         </Section>
       </Container>
