@@ -130,10 +130,7 @@ async function getEmails(auth, title: string) {
         applicationData.fileName = resumeName;
         
         returnGmails.push(applicationData);
-      } else {
-        console.log("No resume attached")
-       
-      }
+      } 
     }
     return returnGmails;
   }    
@@ -142,5 +139,10 @@ async function getEmails(auth, title: string) {
 export async function GetGmails(title: string) {
   return await authorize().then((auth) => getEmails(auth, title)).catch(console.error);
 };
+
+export const ProcessEmailString = (title: string) => {
+  const email = title.split(' ')[1];
+  return email;
+} 
 
 export default GetGmails;

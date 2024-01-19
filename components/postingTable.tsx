@@ -50,6 +50,7 @@ export function PostingTable() {
       const response = await fetch(`/api/company/${session?.user?.email}/postings`);
       console.log(response);
       const data = await response.json();
+      
       if (data) {
         setPostings(data);   
         console.log(postings);

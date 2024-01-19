@@ -48,7 +48,8 @@ export default function MyApp({params}: Props) {
       method: 'POST',
       body: JSON.stringify({
         formatting: formatting,
-        qualifications: qualifications
+        qualifications: qualifications,
+        email: application?.email
       })
     })
    

@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma/client";
-import {GetGmails} from '@/lib/googleapis';
+import {GetGmails, ProcessEmailString} from '@/lib/googleapis';
 import { GmailData } from "@/lib/interfaces";
 
 export const GET = async (request: Request, {params}: any): Promise<Response> => {
@@ -34,10 +34,6 @@ export const GET = async (request: Request, {params}: any): Promise<Response> =>
 
 }
 
-const ProcessEmailString = (title: string) => {
-    const email = title.split(' ')[1];
-    return email;
-} 
 
 const GetNewApplications = async (postingIds: Record<string, number>) => {
     try {

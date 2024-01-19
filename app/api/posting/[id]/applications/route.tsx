@@ -1,11 +1,10 @@
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/prisma/client";
 
 
 export const GET = async (request: Request, params: any) => {
 
     try {
-        const prisma = new PrismaClient();
-
+        
         const applications = await prisma.application.findMany({where: {postingId: params.id}});
         
         return new Response(JSON.stringify(applications), {status:200});
