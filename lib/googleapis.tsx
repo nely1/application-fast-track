@@ -1,8 +1,11 @@
+import { GmailData } from "./interfaces";
+
 const fs = require('fs').promises;
 const path = require('path');
 const process = require('process');
 const {authenticate} = require('@google-cloud/local-auth');
 const {google} = require('googleapis');
+const {GmailData} = require('@/lib/interfaces');
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/gmail.readonly'];
@@ -76,8 +79,9 @@ async function authorize() {
  *
  * @param {google.auth.OAuth2} auth An authorized OAuth2 client.
  */
-async function getEmails(auth) {
-  const queryTerms = "{subject:\"Internship at NES\" newer_than:1h}";
+async function getEmails(auth, title: string) {
+  let returnGmails: Array<GmailData> = [];
+  const queryTerms = `newer_than:1h`;
   const gmail = google.gmail({version: 'v1', auth});
   const res = await gmail.users.messages.list({
     userId: 'me',
@@ -90,12 +94,15 @@ async function getEmails(auth) {
     return;
   } else {
 
-    for (const applicants of res.data.messages){
+    for (const applicants of res.data.messages){ // things needed: email, resume name, resume encoding
       const applicantEmail = await gmail.users.messages.get({
         userId: 'me',
         id: applicants.id,
       });
-
+      //console.log("this is a new email")
+      let applicationData: GmailData = {};
+      const [subject, from] = (applicantEmail.data.payload.headers).filter((header) => (header.name === 'From' || header.name === 'Subject'));
+      let resumeData = '';
       var resumeName = "";
       var resumeAttachmentID = "";
       for (const attachments of applicantEmail.data.payload.parts) {
@@ -107,23 +114,33 @@ async function getEmails(auth) {
       }
   
       if (resumeAttachmentID) {
-        // const resume = await google.gmail('v1').users.messages.attachments.get({
-        //   auth: auth,
-        //   userId: 'me', 
-        //   id: resumeAttachmentID,
-        //   messageId: applicants.id
-        // });
-        console.log("The pdf name uploaded is: " + resumeName);
-        // fs.writeFile(resumeName, decodeBase64(resume.data.data));
+        const resume = await google.gmail('v1').users.messages.attachments.get({
+          auth: auth,
+          userId: 'me', 
+          id: resumeAttachmentID,
+          messageId: applicants.id
+        });
+        //console.log("The pdf name uploaded is: " + resumeName);
+       
+        resumeData =  resume.data.data;
+    
+        applicationData.email = from.value;
+        applicationData.title = subject.value;
+        applicationData.fileEncoding = resumeData;
+        applicationData.fileName = resumeName;
+        
+        returnGmails.push(applicationData);
       } else {
         console.log("No resume attached")
+       
       }
     }
+    return returnGmails;
   }    
 }
 
-export async function GetGmails() {
-  await authorize().then(getEmails).catch(console.error)
+export async function GetGmails(title: string) {
+  return await authorize().then((auth) => getEmails(auth, title)).catch(console.error);
 };
 
 export default GetGmails;
