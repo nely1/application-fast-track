@@ -61,8 +61,25 @@ export function PostingTable() {
     router.push(`/table/${id}/applications`);
   }
 
+  const handleSearch = (searchText: string) => {
+    if (searchText) {
+      var filter = searchText.toUpperCase();
+      var titleArray = postings.map(function (posting) { return posting.title; })
+      const searched = [...postings].filter(checkTitle => {
+        for (var i=0; i < titleArray.length; i++) {
+          var title = titleArray[i].toUpperCase();
+          if (title.includes(filter)){
+            return true;
+          }
+        } 
+      })
+      setPostings(searched);
+    };
+  }
+
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
+    handleSearch(searchText);
   }
 
   return (load ? (<Loading/>) : (
