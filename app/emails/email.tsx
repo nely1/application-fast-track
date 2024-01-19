@@ -11,10 +11,10 @@ import {
 } from "@react-email/components";
 
 interface EmailProps {
-  name: string;
+  posting: string;
 }
 
-export const NESEmail = ({ name }: EmailProps) => (
+export const NESEmail = ({ posting }: EmailProps) => (
   <Html>
     <Head />
     <Preview>Application details</Preview>
@@ -29,8 +29,11 @@ export const NESEmail = ({ name }: EmailProps) => (
           />
           <Hr style={hr} />
           <Text style={paragraph}>
-            Dear {name}, thank you for submitting your application. You're now ready to
-            join the NES team!
+            Dear applicant, 
+            <br/>We want to express our appreciation for your interest in the Internship position at NES. 
+            <br/><br/>We carefully reviewed all applications, including yours, and we were genuinely impressed with the skills and experiences you bring to the table. 
+            It was a highly competitive process, and we regret to inform you that we have chosen to move forward with another candidate whose qualifications more closely align with our current needs.
+            
           </Text>
           <Hr style={hr} />
           <Text style={paragraph}>
@@ -39,7 +42,7 @@ export const NESEmail = ({ name }: EmailProps) => (
           <Text style={paragraph}>
             Formatting issues:
           </Text>
-          <Text style={paragraph}>
+          <Text style={paragraph}>  
             1. The resume is too short
             2. The resume is poorly spaced
           </Text>
@@ -49,9 +52,6 @@ export const NESEmail = ({ name }: EmailProps) => (
           <Text style={paragraph}>
            None, good job!
           </Text>
-          <Hr style={hr} />
-          <Text style={paragraph}>— The NES team</Text>
-          <Hr style={hr} />
           <Text style={footer}>
             NES team, Summer Hackathon CISSA
           </Text>
@@ -70,7 +70,7 @@ const main = {
 };
 
 const container = {
-  backgroundColor: "#ffffff",
+  backgroundColor: "#FFB6C1",
   margin: "0 auto",
   padding: "20px 0 48px",
   marginBottom: "64px",
@@ -81,20 +81,21 @@ const box = {
 };
 
 const hr = {
-  borderColor: "#e6ebf1",
+  borderColor: "#ffffff",
   margin: "20px 0",
 };
 
 const paragraph = {
-  color: "#525f7f",
+  color: "#000000",
 
-  fontSize: "16px",
+  fontSize: "18px",
   lineHeight: "24px",
   textAlign: "left" as const,
 };
 
 const footer = {
-  color: "#8898aa",
+  color: "#36454F",
   fontSize: "12px",
   lineHeight: "16px",
+  textAlign: "right" as const,
 };
