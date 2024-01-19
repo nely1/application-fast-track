@@ -56,9 +56,9 @@ export function PostingTable() {
     }
   }, [session?.user?.email]);
 
-
-  const handleClick = (id: number) => {
-    router.push(`/table/${id}/applications`);
+  
+  const handleClick = (posting: Posting) => {
+    router.push(`/table/${posting.id}/applications`);
   }
 
   const handleSearch = (searchText: string) => {
@@ -104,9 +104,9 @@ export function PostingTable() {
           <tbody>
             {postings.map((posting: Posting, index: number) => (   
               <tr key={index} className="hover:bg-gray-700 hover:text-blue-500">
-                <td><button type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{index + 1}</button></td>
-                <td><button   type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.title}</button></td>
-                <td><button  type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.applications.length}</button></td> 
+                <td><button type="button" onClick={() => handleClick(posting)} className="w-full text-left">{index + 1}</button></td>
+                <td><button   type="button" onClick={() => handleClick(posting)} className="w-full text-left">{posting.title}</button></td>
+                <td><button  type="button" onClick={() => handleClick(posting)} className="w-full text-left">{posting.applications.length}</button></td> 
               </tr>  
                 )
               )
