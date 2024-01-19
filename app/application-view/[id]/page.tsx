@@ -1,12 +1,17 @@
 "use client"
-import { useState } from 'react';
-import './style.css'
+import { useEffect, useState } from 'react';
+import '../style.css'
 import { MultiSelect } from "react-multi-select-component";
 
 // Material UI components
 import Button from '@mui/material/Button';
 import VerifiedIcon from '@mui/icons-material/Verified';
 import DangerousIcon from '@mui/icons-material/Dangerous';
+import { Application } from '@/lib/interfaces';
+
+interface Props {
+  params: {id: number}
+}
 
 const qualOptions = [
     { label: "Underqualified", value: "unq" },
@@ -19,40 +24,54 @@ const formatOptions = [
     { label: "Poor Formatting", value: "for" },
   ];
   
-export default function MyApp() {
+export default function MyApp({params}: Props) {
+  const [formatting, setFormatting] = useState([]);
+  const [qualifications, setQualifications] = useState([]);
+  const [application, setApplication] = useState<Application>();
 
-  const [selected, setSelected] = useState([]);
-  const [selected2, setSelected2] = useState([]);
+  useEffect(() => {
+    const fetchApplication = async () => {
+      const response = await fetch(`/api/email/${params.id}`, {method: "GET"});
+      const data = await response.json();
+      setApplication(data.data);   
+     
+    }
+    if (params.id) {
+      fetchApplication();
+    }
+  },[params.id])
+  
 
   async function handleSubmit() {
-    await fetch('/api/email', {
+    await fetch(`/api/email/${params.id}`, {
       method: 'POST',
       body: JSON.stringify({
-        name: 'Pat'
+        formatting: formatting,
+        qualifications: qualifications
       })
     })
-    console.log("Selected formatting issues: ", selected);
-    console.log("Selected qualification issues: ", selected2);
+   
   }
-
+  
+  const str = application?.resumeFile.replace(/_/g, '/').replace(/-/g, '+');
   return (
     <div className="flex h-screen pt-5 pl-5">
         <div>
-            <iframe src="https://assets.website-files.com/603d0d2db8ec32ba7d44fffe/603d0e327eb2748c8ab1053f_loremipsum.pdf" width="800" height="100%"/>
+          <iframe src={`data:application/pdf;base64,${str}`} width="800" height="100%"/>
         </div>
         <div className="pl-28 flex flex-col justify-around">
             <MultiSelect
             options={formatOptions}
-            value={selected}
-            onChange={setSelected}
+            value={formatting}
+            onChange={setFormatting}
             labelledBy="Select"
             overrideStrings={{"selectSomeItems": "Formatting Issues..."}}
             hasSelectAll={false}
             />
             <MultiSelect
             options={qualOptions}
-            value={selected2}
-            onChange={setSelected2}
+            value={qualifications}
+            onChange={setQualifications}
             labelledBy="Select"
             overrideStrings={{"selectSomeItems": "Qualification Issues..."}}
             hasSelectAll={false}

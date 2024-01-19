@@ -5,7 +5,7 @@ interface Props {
     params: {id: number}
 }
 
-export async function ApplicationPage({params}: any) {
+export async function ApplicationPage({params}: Props) {
 
     await loginIsRequiredServer();
 

@@ -28,7 +28,7 @@ export function ApplicationTable({params}: any) {
   }, [params.id]);
 
   const handleClick = (id: number) => {
-    router.push(`/application-view`);
+    router.push(`/application-view/${id}`);
   }
   
   const handleSearchChange = (e: ChangeEvent<HTMLInputElement>) => {
