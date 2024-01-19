@@ -16,3 +16,10 @@ export interface Application {
     email: string
     resumeFile: string
 }
+
+export interface GmailData {
+    email: string
+    fileEncoding: string
+    fileName: string
+    title: string
+}
