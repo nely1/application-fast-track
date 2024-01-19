@@ -14,3 +14,7 @@ Our sub-goals for this project are:
 3. Play around with OpenAI or Google API
 4. Most importantly, enjoy coding!
 
+### Features added
+1. Login with Google
+2. PDF Preview
+3. Email sending and fetching
