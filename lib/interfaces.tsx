@@ -15,6 +15,7 @@ export interface Application {
     postingId: number
     email: string
     resumeFile: string
+    fileName: string
 }
 
 export interface GmailData {

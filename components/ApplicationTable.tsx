@@ -54,10 +54,10 @@ export function ApplicationTable({params}: any) {
           </tr>
         </thead>
         <tbody>
-          {applications.map((posting: Application, index: number) => (   
+          {applications.map((application: Application, index: number) => (   
             <tr key={index} className="hover:bg-gray-700 hover:text-blue-500">
-              <td><button type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{index + 1}</button></td>
-              <td><button   type="button" onClick={() => handleClick(posting.id)} className="w-full text-left">{posting.resumeFile}</button></td>
+              <td><button type="button" onClick={() => handleClick(application.id)} className="w-full text-left">{index + 1}</button></td>
+              <td><button   type="button" onClick={() => handleClick(application.id)} className="w-full text-left">{application.fileName}</button></td>
             </tr>  
               )
             )
