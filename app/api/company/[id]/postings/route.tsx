@@ -16,13 +16,13 @@ export const GET = async (request: Request, {params}: any): Promise<Response> =>
                 postingIds[posting.title] = posting.id;
             })
         }
-        const latestUpdate = FindLatestUpdated(company?.postings);
-        if ((Date.now() - latestUpdate) >= 60 * 60 * 1000) {
-            await GetNewApplications(postingIds);
+        // const latestUpdate = FindLatestUpdated(company?.postings);
+        // if ((Date.now() - latestUpdate) >= 60 * 60 * 1000) {
+        //     await GetNewApplications(postingIds);
             
-        }
-        console.log(Date.now() - latestUpdate);
-        console.log(60 * 60 * 1000);
+        // }
+        // console.log(Date.now() - latestUpdate);
+        // console.log(60 * 60 * 1000);
       
         const postings = await prisma.posting.findMany({where: {companyId: company?.id}, include: {applications: true}});
         return new Response(JSON.stringify(postings), {status: 200});

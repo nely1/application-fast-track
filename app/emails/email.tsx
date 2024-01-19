@@ -64,7 +64,7 @@ export const NESEmail = ({ formatting, qualifications, posting }: EmailProps) =>
           </Text>
           <Text style={paragraph}>
             {qualifications.length > 0 ? (
-              formatting.map((item, index) => (
+              qualifications.map((item, index) => (
                 <Text key={index} style={paragraph}>
                   {index + 1}. {item.label}
                 </Text>

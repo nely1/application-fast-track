@@ -26,7 +26,8 @@ export default async function Home() {
               height={100}
               priority
             />
-    
+      <p className='mt-10 '>Smoothen your recruitment process with NES Application Fast Track. 
+        Give advice for applicant resumes</p>
       <GoogleSignInButton/>
 
     </main>
