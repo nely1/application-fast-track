@@ -7,7 +7,7 @@ interface Props {
 
 export async function ApplicationPage({params}: any) {
 
-    const loginCheck = await loginIsRequiredServer();
+    await loginIsRequiredServer();
 
         
     return (
