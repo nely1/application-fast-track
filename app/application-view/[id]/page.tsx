@@ -28,6 +28,7 @@ export default function MyApp({params}: Props) {
   const [formatting, setFormatting] = useState([]);
   const [qualifications, setQualifications] = useState([]);
   const [application, setApplication] = useState<Application>();
+  
 
   useEffect(() => {
     const fetchApplication = async () => {

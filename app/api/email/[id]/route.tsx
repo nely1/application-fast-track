@@ -6,16 +6,17 @@ import {prisma} from '@/prisma/client'
 const resend = new Resend(process.env.RESEND_KEY);
 
 export async function POST(request: Request) {
-  const { formatting, qualifications } = await request.json();
-  console.log(formatting, qualifications);
-  // await resend.emails.send({
-  //   from: 'onboarding@resend.dev',
-  //   to: 'engjiaee@gmail.com',
-  //   subject: 'Application outcome',
-  //   react: NESEmail({
-  //       name
-  //   }), 
-  // });
+  const  comments  = await request.json();
+
+  await resend.emails.send({
+    from: 'onboarding@resend.dev',
+    to: 'engjiaee@gmail.com',
+    subject: 'Application outcome',
+    react: NESEmail({
+        formatting,
+        qualifications
+    }), 
+  });
   
   return NextResponse.json({
     status: 'Ok'

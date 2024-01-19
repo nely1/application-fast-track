@@ -11,7 +11,9 @@ import {
 } from "@react-email/components";
 
 interface EmailProps {
-  posting: string;
+  formatting: string,
+  qualifications: string,
+  posting: string
 }
 
 export const NESEmail = ({ posting }: EmailProps) => (
