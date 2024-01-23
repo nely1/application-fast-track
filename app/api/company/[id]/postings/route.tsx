@@ -16,11 +16,11 @@ export const GET = async (request: Request, {params}: any): Promise<Response> =>
                 postingIds[posting.title] = posting.id;
             })
         }
-        // const latestUpdate = FindLatestUpdated(company?.postings);
-        // if ((Date.now() - latestUpdate) >= 60 * 60 * 1000) {
-        //     await GetNewApplications(postingIds);
+        const latestUpdate = FindLatestUpdated(company?.postings);
+        if ((Date.now() - latestUpdate) >= 60 *60 * 1000) {
+           await GetNewApplications(postingIds);
             
-        // }
+        }
         // console.log(Date.now() - latestUpdate);
         // console.log(60 * 60 * 1000);
       

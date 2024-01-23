@@ -1,12 +1,12 @@
 import { prisma } from "@/prisma/client";
 
 
-export const GET = async (request: Request, params: any) => {
+export const GET = async (request: Request, {params}: any) => {
 
     try {
         
-        const applications = await prisma.application.findMany({where: {postingId: params.id}});
-        
+        const applications = await prisma.application.findMany({where: {postingId: parseInt(params.id)}});
+  
         return new Response(JSON.stringify(applications), {status:200});
         
     }

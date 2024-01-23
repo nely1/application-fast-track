@@ -27,6 +27,7 @@ export function ApplicationTable({params}: any) {
     }
   }, [params.id]);
 
+  console.log(applications);
   const handleClick = (id: number) => {
     router.push(`/application-view/${id}`);
   }
@@ -40,7 +41,7 @@ export function ApplicationTable({params}: any) {
       <form className='relative w-full flex-center'>
         <input
           type="text"
-          placeholder='Search job posting'
+          placeholder='Search Application'
           value = {searchText}
           onChange={handleSearchChange}
           className=''
@@ -50,6 +51,7 @@ export function ApplicationTable({params}: any) {
         <thead>
           <tr>
             <th>No.</th>
+            <th>Email</th>
             <th>Resume</th>
           </tr>
         </thead>
@@ -57,6 +59,7 @@ export function ApplicationTable({params}: any) {
           {applications.map((application: Application, index: number) => (   
             <tr key={index} className="hover:bg-gray-700 hover:text-blue-500">
               <td><button type="button" onClick={() => handleClick(application.id)} className="w-full text-left">{index + 1}</button></td>
+              <td><button type="button" onClick={() => handleClick(application.id)} className="w-full text-left">{application.email}</button></td>
               <td><button   type="button" onClick={() => handleClick(application.id)} className="w-full text-left">{application.fileName}</button></td>
             </tr>  
               )

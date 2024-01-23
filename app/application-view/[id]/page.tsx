@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import '../style.css'
 import { MultiSelect } from "react-multi-select-component";
+import { useRouter } from 'next/navigation';
 
 // Material UI components
 import Button from '@mui/material/Button';
@@ -28,6 +29,7 @@ export default function MyApp({params}: Props) {
   const [formatting, setFormatting] = useState([]);
   const [qualifications, setQualifications] = useState([]);
   const [application, setApplication] = useState<Application>();
+  const router = useRouter();
   
 
   useEffect(() => {
@@ -52,7 +54,7 @@ export default function MyApp({params}: Props) {
         email: application?.email
       })
     })
-   
+    router.push(`/table/${application?.postingId}/applications`);
   }
   
   const str = application?.resumeFile.replace(/_/g, '/').replace(/-/g, '+');
